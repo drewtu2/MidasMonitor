@@ -1,3 +1,4 @@
 **.swp
 MidasMonitor/*
 venv/*
+__pycache__
