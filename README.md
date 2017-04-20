@@ -10,6 +10,11 @@ and regulate fans to maintain a given target temperature.
   pip install -r requirements.txt
 ```
 
+### Docs:
+psutil: (http://pythonhosted.org/psutil/#sensors)
+
+
+
 ## TODO
 
 ### Basic
