@@ -4,6 +4,12 @@
 The goal of this project is to produce a resource that can monitor the GPU temperatures
 and regulate fans to maintain a given target temperature. 
 
+## Setup
+
+```
+  pip install -r requirements.txt
+```
+
 ## TODO
 
 ### Basic
