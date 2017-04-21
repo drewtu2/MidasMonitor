@@ -1,4 +1,4 @@
 **.swp
-MidasMonitor/*
 venv/*
 __pycache__
+midas.log
