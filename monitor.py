@@ -20,3 +20,5 @@ class monitor:
       print()
       count += 1
 
+m = monitor()
+m.printGpuTemp()
