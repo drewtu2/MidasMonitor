@@ -19,7 +19,10 @@ psutil: (http://pythonhosted.org/psutil/#sensors)
 
 ### Basic
 - Get GPU temperatures from the system
+-- Set up helper funcitons to get this information
 - Log results in logfile
+- Integrate dwarfpool's API to provide readouts with log file?
+- Should be run as a chron job?
 
 ### System adjustment
 - Target GPU temperature 75 degrees C - regulate fan speeds to meet targets
