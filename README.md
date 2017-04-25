@@ -2,7 +2,11 @@
 
 ## Goal
 The goal of this project is to produce a resource that can monitor the GPU temperatures
-and regulate fans to maintain a given target temperature. 
+and regulate fans to maintain a given target temperature. The intent is that it
+will run alongside an ethminer script and providing useful information about the 
+state of the machine. This informaiton may either be posted or queried.
+
+Goals still in progress...
 
 ## Setup
 
