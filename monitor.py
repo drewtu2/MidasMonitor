@@ -1,6 +1,8 @@
 import psutil
+import groupy 
 from samplePsutil import testData
 from datetime import datetime
+
 
 class monitor:
 
@@ -10,8 +12,16 @@ class monitor:
     self.amdGpus = self.buildGpuList(testData)
     self.logfileName = "midas.log"
     self.maxTemp = 70
+    self.botName = "Bot of Midas"
+    self.bot = self.getBot()
   
-  # Takes a dictionary of shwtemp and returns a list of gpuInfos
+  # Gets the gorupme bot associated with the groupme chat
+  def getBot(self):
+    bots = groupy.Bot.list()
+    fbots = bots.filter(name = self.botName)
+    return fbots.first
+ 
+ # Takes a dictionary of shwtemp and returns a list of gpuInfos
   # Dict of shwtemps => List of GPUs
   def buildGpuList(self, sensorData):
     amdGpus = sensorData["amdgpu"]
@@ -29,19 +39,23 @@ class monitor:
       logfile.write("*" * 80)
       logfile.write("\n")
       for gpu in self.amdGpus:
-        gpu.printGpu()
+        logfile.write(gpu.printGpu())
       logfile.write("*" * 80 + "\n")
+
+  # Prints all the gpus in the gpu list
+  def printGpus(self):
+    for gpu in self.amdGpus:
+      gpu.printGpu()
 
   # Check temperatures and alert if temperatures exceed a determined amount
   def checkTemps(self):
     for gpu in self.amdGpus:
       if gpu.getCurrentTemp() > self.maxTemp:
         # Send Alert
-        print("GPU", gpu.getGpuNumber(), "Running Hot!")
-        print("Running at", gpu.getCurrentTemp())
+        self.bot.post("GPU " + str(gpu.getGpuNumber()) + " Running Hot!")
+        self.bot.post("Running at " + str(gpu.getCurrentTemp()))
       else:
         pass
-
 
 # Takes a shwtemp and returns a gpuInfo Object
 class gpuInfo:
@@ -82,7 +96,17 @@ class gpuInfo:
        + "High Temp: " + str(self.highTemp) + "\n"\
        + "CriticalTemp: " + str(self.criticalTemp) + "\n\n"
     print(printout)
+    return printout
 
+  # Returns the property of the gpu object as a csv string
+  def gpu2csv(self):
+    return str(self.gpuNumber + ","\
+        + self.label + ","\
+        + self.currentTemp + ","\
+        + self.highTemp + ","\
+        + self.criticalTemp)
+
+# Running stuff
 m = monitor()
 m.recordTemps()
 m.checkTemps()

@@ -22,9 +22,9 @@ psutil: (http://pythonhosted.org/psutil/#sensors)
 ## TODO
 
 ### Basic
-- Get GPU temperatures from the system
--- Set up helper funcitons to get this information
-- Log results in logfile
+~~- Get GPU temperatures from the system~~
+~~-- Set up helper funcitons to get this information~~
+~~- Log results in logfile~~
 - Integrate dwarfpool's API to provide readouts with log file?
 - Should be run as a chron job?
 
