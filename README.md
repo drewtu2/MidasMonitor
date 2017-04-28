@@ -14,12 +14,24 @@ Goals still in progress...
   pip install -r requirements.txt
 ```
 
+NOTE: GroupMe API requires the groupme API key to be set...
+
 ### Docs:
 psutil: (http://pythonhosted.org/psutil/#sensors)
 
 
 
 ## TODO
+
+## Vision
+- Flask Server Running on hosted server as a service type thing (HerokU)
+- Python script running on the local machine periodically making post requests
+- Remote server accepts post requests from boththe main computer and also other students
+- When remote server receives request from GroupMe 
+-- Evaluates, If it is a status
+  queue message from groupme, send the most up to date information. 
+-- If it is from the local server, update local variables with the current local 
+   state of the machine which will be sent back to users from any GroupMe interface
 
 ### Basic
 ~~- Get GPU temperatures from the system~~
@@ -29,10 +41,12 @@ psutil: (http://pythonhosted.org/psutil/#sensors)
 - Should be run as a chron job?
 
 ### System adjustment
-- Target GPU temperature 75 degrees C - regulate fan speeds to meet targets
+~- Target GPU temperature 75 degrees C - regulate fan speeds to meet targets~
+-- Just use `fancontrol` module?
+  
 
 ### Groupme API Integration
-- Send alerts to phone if temperatures exceed 80 degrees C
+~- Send alerts to phone if temperatures exceed 80 degrees C~
 - Query dwarfpool API and post information to GroupMe Chat on request
 
 ### Bells and Whistles to the Max
