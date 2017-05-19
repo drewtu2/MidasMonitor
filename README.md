@@ -47,7 +47,7 @@ psutil: (http://pythonhosted.org/psutil/#sensors)
 
 ### Groupme API Integration
 ~- Send alerts to phone if temperatures exceed 80 degrees C~
-- Query dwarfpool API and post information to GroupMe Chat on request
+- Query ~~dwarfpool~~ ethermine API and post information to GroupMe Chat on request
 
 ### Bells and Whistles to the Max
 - Submit querys from Alexa
