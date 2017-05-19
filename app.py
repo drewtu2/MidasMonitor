@@ -1,9 +1,16 @@
 import os
+
+# Write the keyfile needed by groupme
+with open(".groupy.key", "w") as key_file:
+  key_file.write(os.environ.get("GROUPME_APIKEY"))
+
 import groupy
 from flask import Flask, request
 
 # Initialization
 app = Flask(__name__)
+
+
 g = groupy.Group.list().filter(group_id=os.environ.get("GROUPME_GROUPID")).first
 
 
