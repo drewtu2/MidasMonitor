@@ -1,5 +1,5 @@
 import os
-from flask import Flask, requests
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -14,8 +14,8 @@ def handleGroupme():
   print(request.get_json)
 
 # Handle the arrival of a miner status update. 
-@app.route("/localDump", methods["POST"])
-def handleMinerUpdate:
+@app.route("/localDump", methods=["POST"])
+def handleMinerUpdate():
   print
   
 
