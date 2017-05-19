@@ -10,8 +10,17 @@ from flask import Flask, request
 # Initialization
 app = Flask(__name__)
 
-
 g = groupy.Group.list().filter(group_id=os.environ.get("GROUPME_GROUPID")).first
+
+'''
+Helper Functions
+'''
+# Run when groupme triggers the callback url. 
+def handleBotCallback():
+  print(g.messages().newest.text)
+
+
+
 
 
 # Route to the basic "Hello World" page.... 
@@ -35,5 +44,3 @@ if __name__ == "__main__":
   port = int(os.environ.get("PORT", 5000))
   app.run(host='0.0.0.0', port=port)
 
-def handleBotCallback():
-  print(g.messages().newest.text)
