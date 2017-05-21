@@ -58,7 +58,8 @@ def hello():
 # Handle the GroupMe Notification of a new message that has arrived
 @app.route("/bot", methods=["POST"])
 def botCallback():
-  handleBotCallback()
+  return handleBotCallback()
+
 
 # Handle the arrival of a miner status update. 
 @app.route("/localDump", methods=["POST"])
