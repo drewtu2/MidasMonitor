@@ -39,6 +39,7 @@ def handleBotCallback():
   print(message)
   if "status" in message:
     b.post(status)
+  return "OK"
   
 # Runs when the miner sends an update. 
 def updateStatus(minerStatus):
