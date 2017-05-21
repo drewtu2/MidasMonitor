@@ -6,6 +6,7 @@ from datetime import datetime
 import json
 
 HEROKU_URL = "https://midas-monitor.herokuapp.com"
+ETHERMINE_URL = "https://ethermine.org/api/miner_new/3c76329390da17c727fa1bbbeb2fc45c80a7d92f"
 
 class monitor:
 
@@ -115,23 +116,38 @@ class gpuInfo:
         + self.highTemp + ","\
         + self.criticalTemp)
 
+def testPoolStatus():
+  s = PoolStatus("")
+
+  assert(s.getHashrate(), "44.1 MH/s")
+  assert(s.getAddress(), "3c76329390da17c727fa1bbbeb2fc45c80a7d92f")
+  assert(s.getEthPerMin(), 0.0000303759502223839)
+  assert(s.getUsdPerMin(), 0.00265303549242301)
 
 class PoolStatus:
   
-  def __init__(self, url):
+  def __init__(self, url = ETHERMINE_URL):
     # TODO: Real version
     #self.json = requests.get(url)
     # Debug Version 
-    self.json = requests.get(url)
+    with open('ethermine.json') as json_data:
+          self.json = json.load(json_data)
+  
+  # Returns the total hashrate of the wallet from ethermine
+  def getHashrate(self):
+    return self.json["hashRate"]
 
-  def getHashrate:
-    # TODO: return hashrate
-  def getAddress:
-    # TODO: return address
-  def getEtherPerMin:
-    # TODO: return etherPerMin:
-  def getUsdPerMin:
-    # TODO: return usdPerMin
+  # Returns the address being used from ethermine 
+  def getAddress(self):
+    return self.json["address"]
+
+  # Returns the amount of Eth generated per minute from ethermine 
+  def getEthPerMin(self):
+    return self.json["ethPerMin"]
+  
+  # Returns the usd generated per minute from ethermine
+  def getUsdPerMin(self):
+    return self.json["usdPerMin"]
 
 # Running stuff
 m = monitor()
