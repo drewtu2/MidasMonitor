@@ -1,8 +1,11 @@
 import psutil
 import groupy 
+import requests
 from samplePsutil import testData
 from datetime import datetime
+import json
 
+HEROKU_URL = "https://midas-monitor.herokuapp.com"
 
 class monitor:
 
@@ -56,9 +59,15 @@ class monitor:
         self.bot.post("Running at " + str(gpu.getCurrentTemp()))
       else:
         pass
+  # Posts current miner information to the heroku server
+  def postUpdate(self):
+    r = requests.post(HEROKU_URL, self.amdGpus)
+    
+    if (r.status_code != 200)
+      print(r.status_code, r.reason)
 
-# Takes a shwtemp and returns a gpuInfo Object
 class gpuInfo:
+# Takes a shwtemp and returns a gpuInfo Object
   def __init__(self, shwtemp, gpuNumber):
     self.label = shwtemp[0]
     self.currentTemp = shwtemp[1]
@@ -105,6 +114,24 @@ class gpuInfo:
         + self.currentTemp + ","\
         + self.highTemp + ","\
         + self.criticalTemp)
+
+
+class PoolStatus:
+  
+  def __init__(self, url):
+    # TODO: Real version
+    #self.json = requests.get(url)
+    # Debug Version 
+    self.json = requests.get(url)
+
+  def getHashrate:
+    # TODO: return hashrate
+  def getAddress:
+    # TODO: return address
+  def getEtherPerMin:
+    # TODO: return etherPerMin:
+  def getUsdPerMin:
+    # TODO: return usdPerMin
 
 # Running stuff
 m = monitor()
