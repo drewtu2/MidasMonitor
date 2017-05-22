@@ -6,6 +6,7 @@ with open(".groupy.key", "w") as key_file:
 
 import groupy
 from flask import Flask, request
+from Monitor import PoolStatus, gpuInfo, SystemStatus
 
 ################################################################################
 # Initialization
@@ -29,7 +30,9 @@ A Pool Status is a
   Pool Status Object
 '''
 
-status = "Request Received"
+# Initalize empty, populate in update. 
+status = Monitor.SystemStatus(None, None)
+
 
 
 ################################################################################
@@ -41,13 +44,13 @@ def handleBotCallback():
   message = g.messages().newest.text
   print(message)
   if "status" in message.lower():
-    b.post(status)
+    b.post(status.printStatus())
   return "OK"
   
 # Runs when the miner sends an update. 
 def updateStatus(minerStatus):
-  status.gpus = minerStatus
-  status.ethermine = PoolStatus(ETHERMINE_URL)
+  status.gpus = gpuStatus 
+  status.pool = PoolStatus(ETHERMINE_URL)
 
 
 ################################################################################

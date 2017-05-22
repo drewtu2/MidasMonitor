@@ -17,8 +17,11 @@ class monitor:
     self.logfileName = "midas.log"
     self.maxTemp = 70
     self.botName = "Bot of Midas"
-    self.bot = self.getBot()
-  
+    try:
+      self.bot = self.getBot() 
+    except:
+      print("Could not create bot")
+      self.bot = None
   # Gets the gorupme bot associated with the groupme chat
   def getBot(self):
     bots = groupy.Bot.list()
@@ -56,15 +59,16 @@ class monitor:
     for gpu in self.amdGpus:
       if gpu.getCurrentTemp() > self.maxTemp:
         # Send Alert
-        self.bot.post("GPU " + str(gpu.getGpuNumber()) + " Running Hot!")
-        self.bot.post("Running at " + str(gpu.getCurrentTemp()))
+        if bot is not None:
+          self.bot.post("GPU " + str(gpu.getGpuNumber()) + " Running Hot!")
+          self.bot.post("Running at " + str(gpu.getCurrentTemp()))
       else:
         pass
   # Posts current miner information to the heroku server
   def postUpdate(self):
     r = requests.post(HEROKU_URL, self.amdGpus)
     
-    if (r.status_code != 200)
+    if (r.status_code != 200):
       print(r.status_code, r.reason)
 
 class gpuInfo:
@@ -104,7 +108,7 @@ class gpuInfo:
        + "label: " + self.label + "\n"\
        + "Current Temp: " + str(self.currentTemp) + "\n"\
        + "High Temp: " + str(self.highTemp) + "\n"\
-       + "CriticalTemp: " + str(self.criticalTemp) + "\n\n"
+       + "CriticalTemp: " + str(self.criticalTemp) + "\n"
     print(printout)
     return printout
 
@@ -117,12 +121,12 @@ class gpuInfo:
         + self.criticalTemp)
 
 def testPoolStatus():
-  s = PoolStatus("")
+  s = PoolStatus()
 
-  assert(s.getHashrate(), "44.1 MH/s")
-  assert(s.getAddress(), "3c76329390da17c727fa1bbbeb2fc45c80a7d92f")
-  assert(s.getEthPerMin(), 0.0000303759502223839)
-  assert(s.getUsdPerMin(), 0.00265303549242301)
+  assert s.getHashrate() == "44.1 MH/s", "Hashrate Failed"
+  assert s.getAddress() == "3c76329390da17c727fa1bbbeb2fc45c80a7d92f", "Address Failed"
+  assert s.getEthPerMin() ==  0.0000303759502223839, "EthPerMin Failed"
+  assert s.getUsdPerMin() == 0.00265303549242301, "UsdPerMin Failed"
 
 class PoolStatus:
   
@@ -132,14 +136,13 @@ class PoolStatus:
     # Debug Version 
     with open('ethermine.json') as json_data:
           self.json = json.load(json_data)
+  # Returns the address being used from ethermine 
+  def getAddress(self):
+    return self.json["address"]
   
   # Returns the total hashrate of the wallet from ethermine
   def getHashrate(self):
     return self.json["hashRate"]
-
-  # Returns the address being used from ethermine 
-  def getAddress(self):
-    return self.json["address"]
 
   # Returns the amount of Eth generated per minute from ethermine 
   def getEthPerMin(self):
@@ -149,7 +152,54 @@ class PoolStatus:
   def getUsdPerMin(self):
     return self.json["usdPerMin"]
 
+  # Returns a string of the PoolStatus
+  def getStatus(self):
+    return("Address: " + self.getAddress() + "\n" + \
+    "Hashrate: " + self.getHashrate() + "\n" + \
+    "Eth per min: " + str(self.getEthPerMin()) + "\n" +\
+    "USD per min: " + str(self.getUsdPerMin()))
+
+  # Print String
+  def printStatus(self):
+    print(self.getStatus())
+
+def testSystemStatus():
+  ps = PoolStatus()
+  gpuList = monitor().amdGpus
+  s = SystemStatus(ps, gpuList)
+
+  s.printStatus()
+
+class SystemStatus:
+  
+  def __init__(self, poolStatus, gpuStatuses):
+    # A Pool Status
+    self.pool = poolStatus
+
+    # A List of GpuInfos
+    self.gpus = gpuStatuses
+
+  # Updates the pool status with a given pool status
+  def setPool(self, poolStatus):
+    self.pool = poolStatus
+
+  # Updates the gpu stautses with a given list of gpu statuses
+  def setGpus(self, gpuStatuses):
+    self.gpus = gpuStatuses
+
+  def printStatus(self):
+    print("Pool Info:")
+    self.pool.printStatus()
+    print()
+    print("Gpu Info: ")
+    for gpu in self.gpus:
+      gpu.printGpu()
+  
+'''
 # Running stuff
 m = monitor()
 m.recordTemps()
 m.checkTemps()
+'''
+testPoolStatus()
+testSystemStatus()
