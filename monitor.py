@@ -6,7 +6,7 @@ from datetime import datetime
 import json
 import jsonpickle
 
-HEROKU_URL = "https://midas-monitor.herokuapp.com"
+HEROKU_URL = "https://midas-monitor.herokuapp.com/localDump"
 ETHERMINE_URL = "https://ethermine.org/api/miner_new/3c76329390da17c727fa1bbbeb2fc45c80a7d92f"
 
 class monitor:

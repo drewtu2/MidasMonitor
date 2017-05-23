@@ -70,7 +70,7 @@ def botCallback():
 # Handle the arrival of a miner status update. 
 @app.route("/localDump", methods=["POST"])
 def handleMinerUpdate():
-  updateMinerStatus(requests.get_json())
+  updateStatus(requests.get_json())
 
 
 ################################################################################
