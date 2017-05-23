@@ -197,13 +197,13 @@ class SystemStatus:
     self.gpus = gpuStatuses
 
   def printStatus(self):
-    print("Pool Info:")
-    self.pool.printStatus()
-    print()
-    print("Gpu Info: ")
+    message = str("Pool Info:" + "\n"
+                  + self.pool.printStatus() + "\n"
+                  + "Gpu Info: ")
     for gpu in self.gpus:
-      gpu.printGpu()
-  
+      message.append(gpu.printGpu())
+    print(message)
+    return message
 '''
 # Running stuff
 m = monitor()
