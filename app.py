@@ -79,7 +79,13 @@ def handleMinerUpdate():
 if __name__ == "__main__":
   # Initalize empty, populate in update. 
   status = SystemStatus(None, None)
-  updateStatus(testData)
+  count = 0
+  gpuList = []
+  for gpu in testData["amdgpu"]:
+    gpuList.append(gpuInfo(gpu, count))
+    count += 1
+  test_frozen = jsonpickle.encode(gpuList)
+  updateStatus(test_frozen)
 
   port = int(os.environ.get("PORT", 5000))
   app.run(host='0.0.0.0', port=port)
