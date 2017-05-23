@@ -143,7 +143,7 @@ class PoolStatus:
         self.json = json.load(json_data)
     else:
       # Real version
-      self.json = requests.get(url)
+      self.json = requests.get(url).json()
   # Returns the address being used from ethermine 
   def getAddress(self):
     return self.json["address"]
