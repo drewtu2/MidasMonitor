@@ -50,6 +50,7 @@ def handleBotCallback():
 def updateStatus(gpuStatus):
   status.gpus = jsonpickle.decode(gpuStatus)
   status.pool = PoolStatus(ETHERMINE_URL)
+  return "OK"
 
 
 ################################################################################
@@ -70,7 +71,7 @@ def botCallback():
 # Handle the arrival of a miner status update. 
 @app.route("/localDump", methods=["POST"])
 def handleMinerUpdate():
-  updateStatus(request.data)
+  return updateStatus(request.data)
 
 
 ################################################################################
@@ -86,6 +87,7 @@ if __name__ == "__main__":
     count += 1
   test_frozen = jsonpickle.encode(gpuList)
   updateStatus(test_frozen)
+  b.post("New Code Loaded Sucessfully")
 
   port = int(os.environ.get("PORT", 5000))
   app.run(host='0.0.0.0', port=port)
