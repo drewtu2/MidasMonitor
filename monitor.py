@@ -171,6 +171,7 @@ class PoolStatus:
   # Print String
   def printStatus(self):
     print(self.getStatus())
+    return self.getStatus()
 
 def testSystemStatus():
   ps = PoolStatus()
@@ -201,7 +202,7 @@ class SystemStatus:
                   + self.pool.printStatus() + "\n"
                   + "Gpu Info: ")
     for gpu in self.gpus:
-      message.append(gpu.printGpu())
+      message += gpu.printGpu()
     print(message)
     return message
 '''
