@@ -4,6 +4,7 @@ import requests
 from samplePsutil import testData
 from datetime import datetime
 import json
+import jsonpickle
 
 HEROKU_URL = "https://midas-monitor.herokuapp.com"
 ETHERMINE_URL = "https://ethermine.org/api/miner_new/3c76329390da17c727fa1bbbeb2fc45c80a7d92f"
@@ -66,10 +67,18 @@ class monitor:
         pass
   # Posts current miner information to the heroku server
   def postUpdate(self):
-    r = requests.post(HEROKU_URL, self.amdGpus)
-    
+
+    r = requests.post(HEROKU_URL, jsonpickle.encode(self.amdGpus))
+
+    r.status_code = 404
+    r.reason = "could not find shit"
+
     if (r.status_code != 200):
-      print(r.status_code, r.reason)
+      print(str(r.status_code), r.reason)
+      
+      self.bot.post("Heartbeat to Heroku Failed: " 
+                    + str(r.status_code) + " "
+                    + r.reason)
 
 class gpuInfo:
 # Takes a shwtemp and returns a gpuInfo Object
@@ -203,4 +212,6 @@ m.checkTemps()
 '''
 if __name__ == "__main__":
   testPoolStatus()
-testSystemStatus()
+  testSystemStatus()
+  m = monitor()
+  m.postUpdate()

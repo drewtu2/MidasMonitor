@@ -5,3 +5,5 @@ midas.log
 *.pyc
 staticfiles
 .env
+.groupy.key
+setup

@@ -6,9 +6,9 @@ with open(".groupy.key", "w") as key_file:
   key_file.write(os.environ.get("GROUPME_APIKEY"))
 
 import groupy
+import jsonpickle
 from flask import Flask, request
-from monitor import PoolStatus, gpuInfo, SystemStatus
-
+from monitor import PoolStatus, gpuInfo, SystemStatus, testData
 ################################################################################
 # Initialization
 ################################################################################
@@ -31,8 +31,6 @@ A Pool Status is a
   Pool Status Object
 '''
 
-# Initalize empty, populate in update. 
-status = SystemStatus(None, None)
 
 
 
@@ -49,8 +47,8 @@ def handleBotCallback():
   return "OK"
   
 # Runs when the miner sends an update. 
-def updateStatus(minerStatus):
-  status.gpus = gpuStatus 
+def updateStatus(gpuStatus):
+  status.gpus = jsonpickle.decode(gpuStatus)
   status.pool = PoolStatus(ETHERMINE_URL)
 
 
@@ -79,6 +77,10 @@ def handleMinerUpdate():
 # App Launch 
 ################################################################################
 if __name__ == "__main__":
+  # Initalize empty, populate in update. 
+  status = SystemStatus(None, None)
+  updateStatus(testData)
+
   port = int(os.environ.get("PORT", 5000))
   app.run(host='0.0.0.0', port=port)
 
