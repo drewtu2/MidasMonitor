@@ -1,12 +1,13 @@
 import os
 
+print(os.environ.get("GROUPME_APIKEY"))
 # Write the keyfile needed by groupme
 with open(".groupy.key", "w") as key_file:
   key_file.write(os.environ.get("GROUPME_APIKEY"))
 
 import groupy
 from flask import Flask, request
-from Monitor import PoolStatus, gpuInfo, SystemStatus
+from monitor import PoolStatus, gpuInfo, SystemStatus
 
 ################################################################################
 # Initialization
@@ -31,7 +32,7 @@ A Pool Status is a
 '''
 
 # Initalize empty, populate in update. 
-status = Monitor.SystemStatus(None, None)
+status = SystemStatus(None, None)
 
 
 

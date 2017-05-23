@@ -201,5 +201,6 @@ m = monitor()
 m.recordTemps()
 m.checkTemps()
 '''
-testPoolStatus()
+if __name__ == "__main__":
+  testPoolStatus()
 testSystemStatus()
