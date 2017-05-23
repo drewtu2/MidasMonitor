@@ -67,11 +67,11 @@ class monitor:
         pass
   # Posts current miner information to the heroku server
   def postUpdate(self):
+    frozen = jsonpickle.encode(self.amdGpus)
+    r = requests.post(HEROKU_URL, frozen)
 
-    r = requests.post(HEROKU_URL, jsonpickle.encode(self.amdGpus))
-
-    r.status_code = 404
-    r.reason = "could not find shit"
+#    r.status_code = 404
+#    r.reason = "could not find shit"
 
     if (r.status_code != 200):
       print(str(r.status_code), r.reason)
