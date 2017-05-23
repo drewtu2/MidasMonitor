@@ -5,16 +5,20 @@ from samplePsutil import testData
 from datetime import datetime
 import json
 import jsonpickle
+import tests
 
 HEROKU_URL = "https://midas-monitor.herokuapp.com"
 ETHERMINE_URL = "https://ethermine.org/api/miner_new/3c76329390da17c727fa1bbbeb2fc45c80a7d92f"
+DEBUG = 0
 
 class monitor:
 
   def __init__(self):
+    # TODO: Switch when running on Midas
     #sensorTempResponse = psutil.sensors_temperatures()
-    #self.amdGpus = sensorTempResponse("amdgpu")
+    #self.amdGpus = self.buildGpuList(sensorTempResponse)
     self.amdGpus = self.buildGpuList(testData)
+
     self.logfileName = "midas.log"
     self.maxTemp = 70
     self.botName = "Bot of Midas"
@@ -129,22 +133,17 @@ class gpuInfo:
         + self.highTemp + ","\
         + self.criticalTemp)
 
-def testPoolStatus():
-  s = PoolStatus()
-
-  assert s.getHashrate() == "44.1 MH/s", "Hashrate Failed"
-  assert s.getAddress() == "3c76329390da17c727fa1bbbeb2fc45c80a7d92f", "Address Failed"
-  assert s.getEthPerMin() ==  0.0000303759502223839, "EthPerMin Failed"
-  assert s.getUsdPerMin() == 0.00265303549242301, "UsdPerMin Failed"
 
 class PoolStatus:
   
   def __init__(self, url = ETHERMINE_URL):
-    # TODO: Real version
-    #self.json = requests.get(url)
-    # Debug Version 
-    with open('ethermine.json') as json_data:
-          self.json = json.load(json_data)
+    if DEBUG:
+      # Debug Version 
+      with open('ethermine.json') as json_data:
+        self.json = json.load(json_data)
+    else:
+      # Real version
+      self.json = requests.get(url)
   # Returns the address being used from ethermine 
   def getAddress(self):
     return self.json["address"]
@@ -172,13 +171,6 @@ class PoolStatus:
   def printStatus(self):
     print(self.getStatus())
     return self.getStatus()
-
-def testSystemStatus():
-  ps = PoolStatus()
-  gpuList = monitor().amdGpus
-  s = SystemStatus(ps, gpuList)
-
-  s.printStatus()
 
 class SystemStatus:
   
@@ -212,7 +204,7 @@ m.recordTemps()
 m.checkTemps()
 '''
 if __name__ == "__main__":
-  testPoolStatus()
-  testSystemStatus()
+#  tests.testPoolStatus()
+#  tests.testSystemStatus()
   m = monitor()
   m.postUpdate()

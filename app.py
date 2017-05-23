@@ -1,6 +1,5 @@
 import os
 
-print(os.environ.get("GROUPME_APIKEY"))
 # Write the keyfile needed by groupme
 with open(".groupy.key", "w") as key_file:
   key_file.write(os.environ.get("GROUPME_APIKEY"))
@@ -9,6 +8,8 @@ import groupy
 import jsonpickle
 from flask import Flask, request
 from monitor import PoolStatus, gpuInfo, SystemStatus, testData
+import tests
+
 ################################################################################
 # Initialization
 ################################################################################
@@ -18,21 +19,6 @@ g = groupy.Group.list().filter(group_id=os.environ.get("GROUPME_GROUPID")).first
 b = groupy.Bot.list().filter(bot_id=os.environ.get("GROUPME_BOTID")).first
 
 ETHERMINE_URL = "https://ethermine.org/api/miner_new/3c76329390da17c727fa1bbbeb2fc45c80a7d92f"
-
-'''
-A Status is a
-- Miner Status
-- Pool Status
-
-A Miner Status is a
-  List of gpuInfo Objects
-
-A Pool Status is a
-  Pool Status Object
-'''
-
-
-
 
 ################################################################################
 # Helper Functions
@@ -80,11 +66,7 @@ def handleMinerUpdate():
 if __name__ == "__main__":
   # Initalize empty, populate in update. 
   status = SystemStatus(None, None)
-  count = 0
-  gpuList = []
-  for gpu in testData["amdgpu"]:
-    gpuList.append(gpuInfo(gpu, count))
-    count += 1
+  gpuList = tests.genGpuList()
   test_frozen = jsonpickle.encode(gpuList)
   updateStatus(test_frozen)
   b.post("New Code Loaded Sucessfully")
