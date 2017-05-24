@@ -149,8 +149,15 @@ class PoolStatus:
     return self.json["address"]
   
   # Returns the total hashrate of the wallet from ethermine
+  # JSON => Float
   def getHashrate(self):
-    return self.json["hashRate"]
+    l = []
+    for t in self.json["hashRate"].split():
+      try:
+        l.append(float(t))
+      except ValueError:
+        pass
+    return l[0]
 
   # Returns the amount of Eth generated per minute from ethermine 
   def getEthPerMin(self):
@@ -197,12 +204,7 @@ class SystemStatus:
       message += gpu.printGpu()
     print(message)
     return message
-'''
-# Running stuff
-m = monitor()
-m.recordTemps()
-m.checkTemps()
-'''
+
 if __name__ == "__main__":
 #  tests.testPoolStatus()
 #  tests.testSystemStatus()
