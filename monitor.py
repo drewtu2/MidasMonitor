@@ -240,7 +240,7 @@ class PoolStatus:
   # Returns a string of the PoolStatus
   def getStatus(self):
     return("Address: " + self.getAddress() + "\n" + \
-    "Hashrate: " + self.getHashrate() + "\n" + \
+    "Hashrate: " + str(self.getHashrate()) + "MH/s\n" + \
     "Eth per min: " + str(self.getEthPerMin()) + "\n" +\
     "USD per min: " + str(self.getUsdPerMin()))
 
