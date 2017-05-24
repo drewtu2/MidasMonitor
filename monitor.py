@@ -124,7 +124,7 @@ class monitor:
   def restartRequested(self):
     message = self.g.messages().newest.text
     print(message)
-    if "RESTART" in message:
+    if "RESTART" in message.strip():
       print("Restart request received. Executing...")
       self.bot.post("Restart request received. Executing...")
       return True
