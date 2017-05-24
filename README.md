@@ -1,17 +1,20 @@
 # MidasMonitor
 
 ## Goal
-The goal of this project is to produce a resource that can monitor the GPU temperatures
-and regulate fans to maintain a given target temperature. The intent is that it
-will run alongside an ethminer script and providing useful information about the 
-state of the machine. This informaiton may either be posted or queried.
-
-Goals still in progress...
+The goal of this project is to produce a resource that can monitor an ethereum 
+mining cluster, allowing the user to maintain connected and informed of the state
+of his/her workers at all times.
 
 ## Setup
 
+All python dependencies can be installed using pip.
 ```
   pip install -r requirements.txt
+```
+
+This project also requires the following libraries.
+```
+  lm-sensors
 ```
 
 NOTE: GroupMe API requires the groupme API key to be set...
@@ -24,32 +27,33 @@ psutil: (http://pythonhosted.org/psutil/#sensors)
 ## TODO
 
 ## Vision
-- Flask Server Running on hosted server as a service type thing (HerokU)
+- Flask Server runs on Heroku coordinating the monitoring system
 - Python script running on the local machine periodically making post requests
-- Remote server accepts post requests from boththe main computer and also other students
-- When remote server receives request from GroupMe 
--- Evaluates, If it is a status
-  queue message from groupme, send the most up to date information. 
--- If it is from the local server, update local variables with the current local 
-   state of the machine which will be sent back to users from any GroupMe interface
+- Flask server accepts two types of post requests
+  - Callback URL Post Requests from GroupMe 
+    - If a status queue message received, send the status of miner and pool
+    - RESTART message to restart the miner.
+    - Help message to display command information. 
+    - Ignores All other messages...
+    - * More coming...*
+  - Heartbeats from a worker 
+    - Updates the locally stored information from of the worker status. To be used
+      in next query.
+    - Notes when the last heartbeat was received...
 
-### Basic
-~~- Get GPU temperatures from the system~~
-~~-- Set up helper funcitons to get this information~~
-~~- Log results in logfile~~
-- Integrate dwarfpool's API to provide readouts with log file?
-- Should be run as a chron job?
+### Chron Jobs
+The following scripts should be setup as a chron job...
+
+- libs/worker.py: runs every 5 minutes on the worker node.
+- scripts/launcher.sh: runs on startup on the worker node.
 
 ### System adjustment
-~- Target GPU temperature 75 degrees C - regulate fan speeds to meet targets~
--- Just use `fancontrol` module?
+- Target GPU temperature 75 degrees C - regulate fan speeds to meet targets
+
   
 
 ### Groupme API Integration
-~- Send alerts to phone if temperatures exceed 80 degrees C~
-- Query ~~dwarfpool~~ ethermine API and post information to GroupMe Chat on request
+~- Send alerts to phone if temperatures exceed 75 degrees C~
+~~- Query ~~dwarfpool~~ ethermine API and post information to GroupMe Chat on request~~
 
-### Bells and Whistles to the Max
-- Submit querys from Alexa
-- Graph temperature over time, correlate to hash rate over time
 

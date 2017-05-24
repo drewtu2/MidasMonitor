@@ -1,14 +1,23 @@
 ################################################################################
 # Constants
 ################################################################################
+
+# URLs
 ETHERMINE_URL = "https://ethermine.org/api/miner_new/3c76329390da17c727fa1bbbeb2fc45c80a7d92f" 
-HEARTBEAT_TIMEOUT = 10
-MIN_HASHRATE = 30
-SECONDS_PER_MINUTE = 60
-TEN_MINUTES_SECONDS = 10 * SECONDS_PER_MINUTE
 HEROKU_URL = "https://midas-monitor.herokuapp.com"
+HEROKU_HEARTBEAT = "/localDump"
+# Timing
+SECONDS_PER_MINUTE = 60
+MINUTES_PER_HOUR = 60 
+TEN_MINUTES_SECONDS = 10 * SECONDS_PER_MINUTE
+HEARTBEAT_TIMEOUT = 10 # MINUTES
+
+# Other
+MIN_HASHRATE = 30
 DEBUG = 0
 
+usage = ("status: displays a status message of the mining system. \n"
+        "RESTART: restarts the machine")
 ################################################################################
 # Import Modules
 ################################################################################

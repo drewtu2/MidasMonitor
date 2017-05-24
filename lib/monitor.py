@@ -63,17 +63,18 @@ class monitor:
 
   # Check temperatures and alert if temperatures exceed a determined amount
   def checkTemps(self):
+    print("Monitor: Checking Temperatures...")
     for gpu in self.amdGpus:
-      _checkTempsHelper(gpu)
+      self._checkTempsHelper(gpu)
 
   # Helper function for checkTemps
   def _checkTempsHelper(self, gpu):
     if gpu.getCurrentTemp() > self.maxTemp:
       # Send Alert
-      if bot is not None:
+      if self.bot is not None:
         try:
-          self.bot.post("GPU " + str(gpu.getGpuNumber()) + " Running Hot!")
-          self.bot.post("Running at " + str(gpu.getCurrentTemp()))
+          self.bot.post("GPU " + str(gpu.getGpuNumber()) + " Running Hot!" + "\n"
+                        + "Running at " + str(gpu.getCurrentTemp()))
         except:
           print("Error Posting temp update to Groupme")
       else:
@@ -83,15 +84,15 @@ class monitor:
 
   # Posts current miner information to the heroku server
   def heartBeat(self):
-    print("test")
+    print("Monitor: sending Heartbeat")
     frozen = jsonpickle.encode(self.amdGpus)
     try:
-      r = requests.post(constants.HEROKU_URL + "/localDump", frozen)
-      r.status_code = 404
-      r.reason = "could not find shit"
+      r = requests.post(constants.HEROKU_URL + constants.HEROKU_HEARTBEAT, frozen)
+      #r.status_code = 404
+      #r.reason = "could not find shit"
       if (r.status_code != 200):
         print(str(r.status_code), r.reason)
-        self.bot.post("Heartbeat to Heroku Failed: " 
+        self.bot.post("Monitor: Heartbeat to Heroku Failed: " 
                       + str(r.status_code) + " "
                       + r.reason)
       else:
@@ -109,7 +110,7 @@ class monitor:
   #
   # TODO: Actually, just restart if requested...
   def checkAlive(self):
-    
+    print("Monitor: Checking if alive...") 
     #if self.restartRequested() && (self.zeroHash() || self.staleHeart()) 
     if self.restartRequested():
       self.rebootMiner()
@@ -268,6 +269,7 @@ class SystemStatus:
       message += gpu.printGpu()
     print(message)
     return message
+
 
 if __name__ == "__main__":
 #  constants.testPoolStatus()

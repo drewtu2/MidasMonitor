@@ -1,4 +1,6 @@
 import os
+import sys
+sys.path.append("lib/" )
 
 # Write the keyfile needed by groupme
 with open(".groupy.key", "w") as key_file:
@@ -32,6 +34,8 @@ def handleBotCallback():
   print(message)
   if "status" in message.lower():
     b.post(status.printStatus())
+  elif "help" in message.lower():
+    b.post(constants.usage)
   return "OK"
   
 # Runs when the miner sends an update. 
@@ -87,7 +91,7 @@ def botCallback():
 
 
 # Handle the arrival of a miner status update. 
-@app.route("/localDump", methods=["POST"])
+@app.route(constants.HEROKU_HEARTBEAT, methods=["POST"])
 def handleMinerUpdate():
   return updateStatus(request.data)
 
@@ -104,7 +108,7 @@ if __name__ == "__main__":
 
   #startHeartbeatChecker()
 
-  b.post("New Code Loaded Sucessfully")
+  b.post("Heroku: New Code Loaded Sucessfully")
 
   port = int(os.environ.get("PORT", 5000))
   app.run(host='0.0.0.0', port=port)
