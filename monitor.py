@@ -1,14 +1,18 @@
 import psutil
 import groupy 
 import requests
-from samplePsutil import testData
-from datetime import datetime
 import json
 import jsonpickle
 import tests
+import os
+from subprocess import call
+from samplePsutil import testData
+from datetime import datetime, timedelta
 
 HEROKU_URL = "https://midas-monitor.herokuapp.com"
 ETHERMINE_URL = "https://ethermine.org/api/miner_new/3c76329390da17c727fa1bbbeb2fc45c80a7d92f"
+MIN_HASHRATE = 30
+HEARTBEAT_TIMEOUT = 20
 DEBUG = 0
 
 class monitor:
@@ -22,6 +26,10 @@ class monitor:
     self.logfileName = "midas.log"
     self.maxTemp = 70
     self.botName = "Bot of Midas"
+    self.lastSuccessfulHeartbeat = datetime.now()
+
+    self.g = groupy.Group.list().filter(group_id=os.environ.get("GROUPME_GROUPID")).first
+
     try:
       self.bot = self.getBot() 
     except:
@@ -62,27 +70,89 @@ class monitor:
   # Check temperatures and alert if temperatures exceed a determined amount
   def checkTemps(self):
     for gpu in self.amdGpus:
-      if gpu.getCurrentTemp() > self.maxTemp:
-        # Send Alert
-        if bot is not None:
+      _checkTempsHelper(gpu)
+
+  # Helper function for checkTemps
+  def _checkTempsHelper(self, gpu):
+    if gpu.getCurrentTemp() > self.maxTemp:
+      # Send Alert
+      if bot is not None:
+        try:
           self.bot.post("GPU " + str(gpu.getGpuNumber()) + " Running Hot!")
           self.bot.post("Running at " + str(gpu.getCurrentTemp()))
+        except:
+          print("Error Posting temp update to Groupme")
       else:
         pass
+    else:
+      pass
+
   # Posts current miner information to the heroku server
-  def postUpdate(self):
+  def heartBeat(self):
+    print("test")
     frozen = jsonpickle.encode(self.amdGpus)
-    r = requests.post(HEROKU_URL + "/localDump", frozen)
+    try:
+      r = requests.post(HEROKU_URL + "/localDump", frozen)
+      r.status_code = 404
+      r.reason = "could not find shit"
+      if (r.status_code != 200):
+        print(str(r.status_code), r.reason)
+        self.bot.post("Heartbeat to Heroku Failed: " 
+                      + str(r.status_code) + " "
+                      + r.reason)
+      else:
+        self.lastSuccessfullHeartbeat = datetime.now()
+    except:
+      print("ERROR: trying to post heartbeat")
 
-#    r.status_code = 404
-#    r.reason = "could not find shit"
+  
+  # Restart the miner under the following conditions.
+  # If last message in the group is "restart", then miner is dead. 
+  # AND
+  # 1. If the hashrate in the group is 0
+  # OR
+  # 2. If the last successfull heartbeat was over an hour ago. 
+  #
+  # TODO: Actually, just restart if requested...
+  def checkAlive(self):
+    
+    #if self.restartRequested() && (self.zeroHash() || self.staleHeart()) 
+    if self.restartRequested():
+      self.rebootMiner()
+  
+  # Returns a boolean if the last message in the group is exectly "RESTART"
+  def restartRequested(self):
+    message = self.g.messages().newest.text
+    print(message)
+    if "RESTART" in message:
+      print("Restart request received. Executing...")
+      self.bot.post("Restart request received. Executing...")
+      return True
+    else:
+      print("Restart not requested...")
+      return False
 
-    if (r.status_code != 200):
-      print(str(r.status_code), r.reason)
-      
-      self.bot.post("Heartbeat to Heroku Failed: " 
-                    + str(r.status_code) + " "
-                    + r.reason)
+  # Returns a boolean if the hashrate from ethermine is less than MIN_HASHRATE
+  def lowHash(self):
+    if PoolStatus().getHashrate() < MIN_HASHRATE:
+      return True
+    else:
+      return False
+
+  # Returns a boolean if the last successfull heartbeat was over an hour ago
+  def staleHeart(self):
+    secondsSinceLastBeat = (lastSuccessfulHeartbeat - datetime.now()).total_seconds()
+    minutesSinceLastBeat = divmod(secondsSinceLastBeat, SECONDS_PER_MINUTE)
+
+    if minutesSinceLastBeat[0] > HEARTBEAT_TIMEOUT:
+      return True
+    else:
+      return False
+
+  # Reboot the machine. All necessary scripts should be started by a cronjob on startup.
+  def rebootMiner(self):
+    print("Calling reboot...")
+    call(["reboot"])
 
 class gpuInfo:
 # Takes a shwtemp and returns a gpuInfo Object
@@ -209,4 +279,5 @@ if __name__ == "__main__":
 #  tests.testPoolStatus()
 #  tests.testSystemStatus()
   m = monitor()
-  m.postUpdate()
+  #m.heartBeat()
+  m.checkAlive()
