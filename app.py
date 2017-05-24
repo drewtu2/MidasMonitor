@@ -32,9 +32,9 @@ lastHeartbeat = datetime.now()
 def handleBotCallback():
   message = g.messages().newest.text
   print(message)
-  if "status" in message.lower():
+  if "status" is message.lower().strip():
     b.post(status.printStatus())
-  elif "help" in message.lower():
+  elif "help" is message.lower().strip():
     b.post(constants.usage)
   return "OK"
   
