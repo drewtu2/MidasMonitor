@@ -6,7 +6,7 @@ with open(".groupy.key", "w") as key_file:
 
 import groupy
 import jsonpickle
-import tests
+import constants 
 import threading
 import time
 from flask import Flask, request
@@ -21,12 +21,6 @@ app = Flask(__name__)
 g = groupy.Group.list().filter(group_id=os.environ.get("GROUPME_GROUPID")).first
 b = groupy.Bot.list().filter(bot_id=os.environ.get("GROUPME_BOTID")).first
 lastHeartbeat = datetime.now()
-
-ETHERMINE_URL = "https://ethermine.org/api/miner_new/3c76329390da17c727fa1bbbeb2fc45c80a7d92f"
-HEARTBEAT_TIMEOUT = 10
-MIN_HASHRATE = 30
-SECONDS_PER_MINUTE = 60
-TEN_MINUTES_SECONDS = 10 * SECONDS_PER_MINUTE
 
 ################################################################################
 # Helper Functions
@@ -43,12 +37,12 @@ def handleBotCallback():
 # Runs when the miner sends an update. 
 def updateStatus(gpuStatus):
   status.gpus = jsonpickle.decode(gpuStatus)
-  status.pool = PoolStatus(ETHERMINE_URL)
+  status.pool = PoolStatus(constants.ETHERMINE_URL)
 
   lastHeartBeat = datetime.now() 
 
   # If the hashrate is too low, send warning notification. 
-  if status.pool.getHashrate() < MIN_HASHRATE:
+  if status.pool.getHashrate() < constants.MIN_HASHRATE:
     b.post("WARNING: Hashrate at " 
         + str(status.pool.getHashrate()) + "MH/s. Check miner")
   
@@ -64,13 +58,13 @@ def startHeartbeatChecker():
 # Runs in its own thread. 
 def checkHeartbeat():
   next_call = time.time()
-  delay = TEN_MINUTES_SECONDS
+  delay = constants.TEN_MINUTES_SECONDS
   delay = 10
   while True:
     print("Heartbeat called")
     secondsSinceLastBeat = (lastHeartbeat - datetime.now()).total_seconds()
-    minutesSinceLastBeat = divmod(secondsSinceLastBeat, SECONDS_PER_MINUTE)
-    if minutesSinceLastBeat[0] > HEARTBEAT_TIMEOUT:
+    minutesSinceLastBeat = divmod(secondsSinceLastBeat, constants.SECONDS_PER_MINUTE)
+    if minutesSinceLastBeat[0] > constants.HEARTBEAT_TIMEOUT:
       b.post("WARNING: DELAYED HEARTBEAT \n"
           + "Last beat: " + str(minutesSinceLastBeat[0]) + " minutes ago")
     next_call = next_call + delay;
@@ -104,7 +98,7 @@ def handleMinerUpdate():
 if __name__ == "__main__":
   # Initalize empty, populate in update. 
   status = SystemStatus(None, None)
-  gpuList = tests.genGpuList()
+  gpuList = constants.genGpuList()
   test_frozen = jsonpickle.encode(gpuList)
   updateStatus(test_frozen)
 

@@ -3,17 +3,11 @@ import groupy
 import requests
 import json
 import jsonpickle
-import tests
+import constants
 import os
 from subprocess import call
 from samplePsutil import testData
 from datetime import datetime, timedelta
-
-HEROKU_URL = "https://midas-monitor.herokuapp.com"
-ETHERMINE_URL = "https://ethermine.org/api/miner_new/3c76329390da17c727fa1bbbeb2fc45c80a7d92f"
-MIN_HASHRATE = 30
-HEARTBEAT_TIMEOUT = 20
-DEBUG = 0
 
 class monitor:
 
@@ -92,7 +86,7 @@ class monitor:
     print("test")
     frozen = jsonpickle.encode(self.amdGpus)
     try:
-      r = requests.post(HEROKU_URL + "/localDump", frozen)
+      r = requests.post(constants.HEROKU_URL + "/localDump", frozen)
       r.status_code = 404
       r.reason = "could not find shit"
       if (r.status_code != 200):
@@ -132,9 +126,9 @@ class monitor:
       print("Restart not requested...")
       return False
 
-  # Returns a boolean if the hashrate from ethermine is less than MIN_HASHRATE
+  # Returns a boolean if the hashrate from ethermine is less than constants.MIN_HASHRATE
   def lowHash(self):
-    if PoolStatus().getHashrate() < MIN_HASHRATE:
+    if PoolStatus().getHashrate() < constants.MIN_HASHRATE:
       return True
     else:
       return False
@@ -144,7 +138,7 @@ class monitor:
     secondsSinceLastBeat = (lastSuccessfulHeartbeat - datetime.now()).total_seconds()
     minutesSinceLastBeat = divmod(secondsSinceLastBeat, SECONDS_PER_MINUTE)
 
-    if minutesSinceLastBeat[0] > HEARTBEAT_TIMEOUT:
+    if minutesSinceLastBeat[0] > constants.HEARTBEAT_TIMEOUT:
       return True
     else:
       return False
@@ -206,8 +200,8 @@ class gpuInfo:
 
 class PoolStatus:
   
-  def __init__(self, url = ETHERMINE_URL):
-    if DEBUG:
+  def __init__(self, url = constants.ETHERMINE_URL):
+    if constants.DEBUG:
       # Debug Version 
       with open('ethermine.json') as json_data:
         self.json = json.load(json_data)
@@ -276,8 +270,8 @@ class SystemStatus:
     return message
 
 if __name__ == "__main__":
-#  tests.testPoolStatus()
-#  tests.testSystemStatus()
+#  constants.testPoolStatus()
+#  constants.testSystemStatus()
   m = monitor()
   #m.heartBeat()
   m.checkAlive()
