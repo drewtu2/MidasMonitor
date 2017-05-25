@@ -230,7 +230,7 @@ class PoolStatus:
   
   # Returns the amount of Eth generated per day from ethermine
   def getEthPerDay(self):
-    return self.getEthPerMin()*MINUTES_PER_HOUR*HOUR_PER_DAY
+    return self.getEthPerMin()*constants.MINUTES_PER_HOUR*constants.HOUR_PER_DAY
 
   # Returns the usd generated per minute from ethermine
   def getUsdPerMin(self):
@@ -238,7 +238,7 @@ class PoolStatus:
 
   # Returns the amount of USD generated per day from ethermine
   def getUsdPerDay(self):
-    return self.getUsdPerMin()*MINUTES_PER_HOUR*HOUR_PER_DAY
+    return self.getUsdPerMin()*constants.MINUTES_PER_HOUR*constants.HOUR_PER_DAY
 
   # Returns a string of the PoolStatus
   def getStatus(self):
