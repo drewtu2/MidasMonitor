@@ -9,6 +9,7 @@ HEROKU_HEARTBEAT = "/localDump"
 # Timing
 SECONDS_PER_MINUTE = 60
 MINUTES_PER_HOUR = 60 
+HOURS_PER_DAY = 24
 TEN_MINUTES_SECONDS = 10 * SECONDS_PER_MINUTE
 HEARTBEAT_TIMEOUT = 10 # MINUTES
 
@@ -17,7 +18,8 @@ MIN_HASHRATE = 30
 DEBUG = 0
 
 usage = ("status: displays a status message of the mining system. \n"
-        "RESTART: restarts the machine")
+        "RESTART: restarts the machine\n"
+        "help: displays help message")
 ################################################################################
 # Import Modules
 ################################################################################
