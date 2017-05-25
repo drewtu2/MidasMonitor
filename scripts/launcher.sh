@@ -1,3 +1,13 @@
+#!/bin/bash
+
+set -e
+
+# Ensure this is being run as root
+if [ "$EUID" -ne 0 ]
+then echo "Please run as root"
+  exit
+fi
+
 source minerConfig
 
 ###############################################################################
@@ -7,7 +17,7 @@ source minerConfig
 # the fans having been started...
 ###############################################################################
 
-# << FAN CODE HERE >> 
+./setFanSpeed.sh 200
 
 ###############################################################################
 # Start miner depending on arguments
