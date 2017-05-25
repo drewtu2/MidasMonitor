@@ -14,7 +14,8 @@ TEN_MINUTES_SECONDS = 10 * SECONDS_PER_MINUTE
 HEARTBEAT_TIMEOUT = 10 # MINUTES
 
 # Other
-MIN_HASHRATE = 30
+MIN_HASHRATE = 30 # MH/s
+MAX_TEMP = 78 # Degrees C
 DEBUG = 0
 
 usage = ("status: displays a status message of the mining system. \n"

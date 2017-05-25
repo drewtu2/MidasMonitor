@@ -18,7 +18,7 @@ class monitor:
     self.amdGpus = self.buildGpuList(testData)
 
     self.logfileName = "midas.log"
-    self.maxTemp = 70
+    self.maxTemp = constants.MAX_TEMP
     self.botName = "Bot of Midas"
     self.lastSuccessfulHeartbeat = datetime.now()
 
