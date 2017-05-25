@@ -246,7 +246,7 @@ class PoolStatus:
     "Hashrate: " + str(self.getHashrate()) + "MH/s\n" + \
     "Eth per min: " + str(self.getEthPerMin()) + "\n" +\
     "Eth per day: " + str(self.getEthPerDay()) + "\n" +\
-    "USD per min: " + str(self.getUsdPerMin()))+ "\n" +\
+    "USD per min: " + str(self.getUsdPerMin())+ "\n" +\
     "USD per day: " + str(self.getUsdPerDay()))
 
   # Print String
