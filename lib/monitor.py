@@ -13,9 +13,9 @@ class monitor:
 
   def __init__(self):
     # TODO: Switch when running on Midas
-    #sensorTempResponse = psutil.sensors_temperatures()
-    #self.amdGpus = self.buildGpuList(sensorTempResponse)
-    self.amdGpus = self.buildGpuList(testData)
+    sensorTempResponse = psutil.sensors_temperatures()
+    self.amdGpus = self.buildGpuList(sensorTempResponse)
+    #self.amdGpus = self.buildGpuList(testData)
 
     self.logfileName = "midas.log"
     self.maxTemp = constants.MAX_TEMP

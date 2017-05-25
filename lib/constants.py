@@ -16,7 +16,7 @@ HEARTBEAT_TIMEOUT = 10 # MINUTES
 # Other
 MIN_HASHRATE = 30 # MH/s
 MAX_TEMP = 78 # Degrees C
-DEBUG = 0
+DEBUG = 1
 
 usage = ("status: displays a status message of the mining system. \n"
         "RESTART: restarts the machine\n"
