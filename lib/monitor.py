@@ -287,4 +287,4 @@ if __name__ == "__main__":
 #  m = monitor()
 #  m.heartBeat()
 #  m.checkAlive()
-  echo "Loaded Monitor.py"
+  print("Loaded Monitor.py")
