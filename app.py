@@ -63,7 +63,7 @@ def startHeartbeatChecker():
 def checkHeartbeat():
   next_call = time.time()
   delay = constants.TEN_MINUTES_SECONDS
-  delay = 10
+  #delay = 10
   while True:
     print("Heartbeat called")
     secondsSinceLastBeat = (lastHeartbeat - datetime.now()).total_seconds()
