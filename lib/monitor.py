@@ -284,6 +284,6 @@ class SystemStatus:
 if __name__ == "__main__":
 #  constants.testPoolStatus()
 #  constants.testSystemStatus()
-  m = monitor()
-  #m.heartBeat()
-  m.checkAlive()
+#  m = monitor()
+#  m.heartBeat()
+#  m.checkAlive()

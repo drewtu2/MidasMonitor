@@ -106,7 +106,7 @@ if __name__ == "__main__":
   test_frozen = jsonpickle.encode(gpuList)
   updateStatus(test_frozen)
 
-  #startHeartbeatChecker()
+  startHeartbeatChecker()
 
   b.post("Heroku: New Code Loaded Sucessfully")
 
