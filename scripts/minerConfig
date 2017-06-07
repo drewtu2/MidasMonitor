@@ -4,7 +4,7 @@ export GPU_USE_SYNC_OBJECTS=1
 export GPU_MAX_ALLOC_PERCENT=95
 export GPU_SINGLE_ALLOC_PERCENT=95
 
-export PATH=$PATH:/home/midas/Desktop/cpp-ethereum/build/ethminer
+export PATH=$PATH:$ETHMINER_HOME/build/ethminer
 
 echo "Sourced Miner Config"
 

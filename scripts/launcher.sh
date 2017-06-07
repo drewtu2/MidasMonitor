@@ -8,6 +8,7 @@ then echo "Please run as root"
   exit
 fi
 
+source ../setup
 source minerConfig
 
 ###############################################################################
@@ -17,7 +18,7 @@ source minerConfig
 # the fans having been started...
 ###############################################################################
 
-./setFanSpeed.sh 200
+#./setFanSpeed.sh 200
 
 ###############################################################################
 # Start miner depending on arguments
@@ -33,10 +34,23 @@ source minerConfig
 
 # Wallet to mine to 
 AT_JB_WALLET="3c76329390da17c727fa1bbbeb2fc45c80a7d92f"
-WALLET=$AT_JB_WALLET
+EREBUS_WALLET="963eab92640c6466ecb30051deee5c2c55e597c9"
 
-# Name of the worker
-WORKER_NAME="Midas"
+if [ $(hostname) = "midas-desktop" ]
+then
+	./setFanSpeed.sh 200
+	WORKER_NAME="midas"
+	WALLET=$AT_JB_WALLET
+elif [ $(hostname) = "erebus" ]
+then	
+	WORKER_NAME="erebus"
+	WALLET=$EREBUS_WALLET
+else
+	echo ERROR: Hostname not recognized...
+	exit 1
+fi
+
+
 EMAIL="drewtu2@yahoo.com"
 
 ####################################
@@ -52,7 +66,7 @@ _ethminer_ethermine() {
 ####################################
 _ethminer_dwarfpool() {
   echo "Running Dwarfpool"
-  ethminer -G -F http://eth-us.dwarfpool.com:80/$AT_JB_WALLET/$EMAIL
+  ethminer -G -F http://eth-us.dwarfpool.com:80/$WALLET/$EMAIL
 };
 
 
