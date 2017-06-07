@@ -220,10 +220,9 @@ class PoolStatus:
     for t in self.json["hashRate"].split():
       try:
         l.append(float(t))
+        return l[0]
       except ValueError:
-        pass
-    return l[0]
-
+        return 0 
   # Returns the amount of Eth generated per minute from ethermine 
   def getEthPerMin(self):
     return self.json["ethPerMin"]
