@@ -1,3 +1,4 @@
+#!/bin/bash
 ###############################################################################
 # Andrew tu
 # This script is intended to be run as a chron job every "N" minutes. 
