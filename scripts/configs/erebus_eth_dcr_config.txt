@@ -3,7 +3,7 @@
 ###############################################################################
 # Ethereum Settings
 ###############################################################################
--epool us1.ethermine.org:4444
+-epool us2.ethermine.org:4444
 -ewal 963eab92640c6466ecb30051deee5c2c55e597c9.erebus 
 -epsw x
 
@@ -25,7 +25,7 @@
 -mode 0
 # Temperature Control:
 # Target temperature of 75c for all cards. 
-#-tt 75
+-tt 75
 -allpools 1
 # etha = Ethereum algorithm mode for AMD cards. 
 #       0 - optimized for fast cards, 
