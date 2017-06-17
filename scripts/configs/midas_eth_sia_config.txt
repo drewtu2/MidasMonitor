@@ -13,7 +13,7 @@
 # http://yiimp.ccminer.org/site/mining
 ###############################################################################
 -dpool stratum+tcp://sia-us-east1.nanopool.org:7777
--dwal ab32c8a88dc09b2cc48bf61953deb32f568288f2c121d7ad85354e17be10652c937391c47330/erebus/drewtu2@yahoo.com
+-dwal ab32c8a88dc09b2cc48bf61953deb32f568288f2c121d7ad85354e17be10652c937391c47330/midas/drewtu2@yahoo.com
 -dcoin sia
 
 ###############################################################################
