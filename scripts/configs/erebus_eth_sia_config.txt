@@ -3,7 +3,7 @@
 ###############################################################################
 # Ethereum Settings
 ###############################################################################
--epool us2.ethermine.org:4444
+-epool us1.ethermine.org:4444
 -ewal 963eab92640c6466ecb30051deee5c2c55e597c9.erebus 
 -epsw x
 
@@ -31,6 +31,10 @@
 -tstop 90   # Stop if temperature reaches 90
 
 -allpools 1
+-gser 2
+-dbg 1
+#-di 3
+
 # etha = Ethereum algorithm mode for AMD cards. 
 #       0 - optimized for fast cards, 
 #       1 - optimized for slow cards, 
