@@ -1,0 +1,46 @@
+# Configuration File for mining BOTH Ethereum and Decred
+
+###############################################################################
+# Ethereum Settings
+###############################################################################
+-epool eth-us.dwarfpool.com:8008 
+-ewal 3c76329390da17c727fa1bbbeb2fc45c80a7d92f.midas 
+-epsw x
+
+###############################################################################
+# Decred Settings
+# Using Yiimp Miner
+# http://yiimp.ccminer.org/site/mining
+###############################################################################
+-dpool stratum+tcp://sia-us-east1.nanopool.org:7777
+-dwal ab32c8a88dc09b2cc48bf61953deb32f568288f2c121d7ad85354e17be10652c937391c47330/midas/drewtu2@yahoo.com
+-dcoin sia
+
+###############################################################################
+# Other Settings
+###############################################################################
+# Stratum Mode
+-esm 0
+# Dual Mining Mode
+-mode 0
+# Temperature Control:
+# Target temperature of 75c for all cards. 
+-tt 75
+-allpools 1
+# etha = Ethereum algorithm mode for AMD cards. 
+#       0 - optimized for fast cards, 
+#       1 - optimized for slow cards, 
+#       2 - for gpu-pro Linux drivers. 
+#       -1 - autodetect (default, automatically selects between 0 and 1). 
+# You can also set this option for every card individually, for example "-etha 0,1,0".
+# I'm not sure which to use. Our cards should be pretty fast BUT, we are using
+# the amdgpu-pro linux drivers... which causes me to lean towards etha 2
+#-etha 0,2
+
+# Stabilizers
+# Improve stability on multi-GPU systems if miner hangs during startup. 
+# Serializes GPUs initalization routines. Use 
+# "-gser 1" to serailize some of routines and 
+# "-gser 2" to serialize all routines
+-gser 2
+-eres
