@@ -24,11 +24,14 @@
 # Dual Mining Mode
 -mode 0
 # Temperature Control:
-# Target temperature of 75c for all cards. 
--tt 83      # Target temperature 83
--ttdcr 85   # Reduce mining intensity of sia/decr if temperature is above 85
--ttli 87    # Reduce mining intensity of everything if temperature is above 87
--tstop 90   # Stop if temperature reaches 90
+# Target temperature of 83c for all cards. 
+-tt 83
+# Reduce mining intensity of sia/decr if temperature is above 85
+-ttdcr 85
+# Reduce mining intensity of everything if temperature is above 87
+-ttli 87    
+# Stop if temperature reaches 90
+-tstop 90   
 
 -allpools 1
 -gser 2
